@@ -1,6 +1,6 @@
 __author__ = 'lockout87'
 
-import random
+from random import shuffle
 from collections import Counter
 
 def shuffler(dieSize):
@@ -11,7 +11,7 @@ def shuffler(dieSize):
     :return int:
     """
     shuffleRange = range(dieSize)
-    random.shuffle(shuffleRange)
+    shuffle(shuffleRange)
     return shuffleRange[0] + 1
 
 
@@ -30,6 +30,10 @@ def xdy(xDy):
     return sum([shuffler(dieSize) for _ in range(numberOfDice)])
 
 
+def zPlusxdy(zxDy):
+    z, xDy = zxDy.split("+")
+    return int(z) + xdy(xDy)
+
 def fourDSixDropLowest():
     """
     Generally used for stat generation. fourDSixDropLowest returns the sum of 3 six-sided dice,
@@ -40,5 +44,7 @@ def fourDSixDropLowest():
     rolls.remove(min(rolls))
     return sum(rolls)
 
-assert Counter([fourDSixDropLowest() for _ in range(50000)]).most_common()[0][0] == 13, \
-    "Most common number from fourDSixDropLowest() should always be 13. A portion of the stack has been broken."
+
+def diceUnitTests():
+    assert Counter([fourDSixDropLowest() for _ in range(50000)]).most_common()[0][0] == 13, \
+        "Most common number from fourDSixDropLowest() should always be 13. A portion of the stack has been broken."
