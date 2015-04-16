@@ -1,25 +1,44 @@
 __author__ = 'lockout87'
 
 import random
-
+from collections import Counter
 
 def shuffler(dieSize):
+    """
+    Shuffles the numbers and selects the "top".
+    Uses random shuffle due to small die size.
+    :param dieSize:
+    :return int:
+    """
     shuffleRange = range(dieSize)
     random.shuffle(shuffleRange)
     return shuffleRange[0] + 1
 
-def xDx(xDx):
-    xDx = xDx.upper()
-    numberOfDice    = int(xDx.split("D")[0])
-    dieSize         = int(xDx.split("D")[1])
 
-    total = 0
+def xdy(xDy):
+    """
+    Rolls x number of y-sized dice. Returns the sum.
+    :param xDy:
+    :return:
+    """
+    assert isinstance(xDy, str), "xDx should be of type string"
+    xDeey = xDy.upper()
 
-    for i in range(numberOfDice):
-        total += shuffler(dieSize)
-    return total
+    numberOfDice    = int(xDeey.split("D")[0])
+    dieSize         = int(xDeey.split("D")[1])
+
+    return sum([shuffler(dieSize) for _ in range(numberOfDice)])
+
 
 def fourDSixDropLowest():
-    rolls = [xDx("1D6") for i in range(4)]
+    """
+    Generally used for stat generation. fourDSixDropLowest returns the sum of 3 six-sided dice,
+    after rolling four and dropping the lowest.
+    :return:
+    """
+    rolls = [xdy("1D6") for _ in range(4)]
     rolls.remove(min(rolls))
     return sum(rolls)
+
+assert Counter([fourDSixDropLowest() for _ in range(50000)]).most_common()[0][0] == 13, \
+    "Most common number from fourDSixDropLowest() should always be 13. A portion of the stack has been broken."
