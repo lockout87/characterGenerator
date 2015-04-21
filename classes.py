@@ -1,3 +1,5 @@
+import dice
+import tables
 __author__ = 'lockout87'
 
 
@@ -17,9 +19,19 @@ class classes():
         self.bonusStr           = bonusStr
 
 
-    def rollHP(self, level):
-        hp = hitDie + "{}"
+    def rollHP(self, level, stats):
+        conTable = tables.bonusConTable if self.conBonus else tables.conTable
+        return hitDie + dice.xdy("{}D{}".format(str(level - 1), str(hitDie))) + level * conTable[stats["con"]]
 
+    def checkStats(self, stats):
+        statsFit = True
+        for key in self.statRestrictions:
+            if key in stats:
+                if stats[key] < self.statRestrictions[key]:
+                    statsFit = False
+        return statsFit
 
+    def getThac0(self, level):
+        return 20 - self.thac0Progression[0] * ((level - 1) / self.thac0Progression[1])
 
 

@@ -95,3 +95,14 @@ class characterClass():
                                             )
 
 
+
+
+FIGHTER = characterClass().fighter
+MAGE    = characterClass().mage
+PRIEST  = characterClass().priest
+THIEF   = characterClass().thief
+
+print FIGHTER.getThac0(20)
+print MAGE.getThac0(20)
+print PRIEST.getThac0(20)
+print THIEF.getThac0(20)
