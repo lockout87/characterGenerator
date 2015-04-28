@@ -1,6 +1,5 @@
 import dice
 import tables
-__author__ = 'lockout87'
 
 
 class classes():
@@ -18,9 +17,8 @@ class classes():
         self.thac0Progression   = thac0Progression
         self.bonusStr           = bonusStr
 
-
     def rollHP(self, level, stats):
-        conTable = tables.bonusConTable if self.conBonus else tables.conTable
+        conTable = tables.bonusConTable if self.bonusConHP else tables.conTable
         return hitDie + dice.xdy("{}D{}".format(str(level - 1), str(hitDie))) + level * conTable[stats["con"]]
 
     def checkStats(self, stats):
