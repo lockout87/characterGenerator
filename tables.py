@@ -1,6 +1,6 @@
 __author__ = 'lockout87'
 
-class Table():
+class Table(object):
     def __init__(self, tableName, headings, values):
         self.tableName  = tableName
         self.headings   = headings
@@ -69,8 +69,8 @@ class STRENGTHTABLE(Table):
 
 
 class DEXTABLE(Table):
-    def getDex(self, dexvalue):
-        return dexvalue
+    def getDex(self, value):
+        return value if 0 < value < 26 else 1 if value < 1 else 25 if value > 25 else None
 
     def getReactionAdj(self, dexValue):
         return self.values[self.getDex(dexValue)][0]
@@ -83,18 +83,14 @@ class DEXTABLE(Table):
 
 
 class CONTABLE(Table):
-    def getCon(self, convalue):
-        if convalue < 1:
-            convalue = 1
-        elif convalue > 25:
-            convalue = 25
-        return convalue
+    def getCon(self, value):
+        return value if 0 < value < 26 else 1 if value < 1 else 25 if value > 25 else None
 
     def getHitPointAdj(self, convalue):
         realConValue    = self.getCon(convalue)
         warriorAdj      = 0
         minimumDieValue = 1
-        values          = self.values[realConValue]
+        values          = self.values[realConValue][0]
 
         if isinstance(values, list):
             adjust = values[0]
@@ -105,8 +101,99 @@ class CONTABLE(Table):
 
         return adjust, warriorAdj, minimumDieValue
 
+    def getSysShock(self, convalue):
+        return self.values[self.getCon(convalue)][1]
+
+    def getResSurvival(self, convalue):
+        return self.values[self.getCon(convalue)][2]
+
+    def getPoisonSave(self, convalue):
+        return self.values[self.getCon(convalue)][3]
+
+    def getRegen(self, convalue):
+        return self.values[self.getCon(convalue)][4]
+
+class INTTABLE(Table):
+    def getInt(self, value):
+        return value if 0 < value < 26 else 1 if value < 1 else 25 if value > 25 else None
+
+    def getNumLangs(self, intvalue):
+        return self.values[self.getInt(intvalue)][0]
+
+    def getSpellLevel(self, intvalue):
+        return self.values[self.getInt(intvalue)][1]
+
+    def getChanceToLearnSpell(self, intvalue):
+        return self.values[self.getInt(intvalue)][2]
+
+    def getMaxSpellsPerLevel(self, intvalue):
+        return self.values[self.getInt(intvalue)][3]
+
+    def getIllusionImmunity(self, intvalue):
+        realIntValue = self.getInt(intvalue)
+        values = []
+        for i in range(25):
+            curValues = self.values[realIntValue][4]
+            if curValues != 0:
+                values.append(curValues)
+                realIntValue -= 1
+            else:
+                break
+        return values
 
 
+class WISTABLE(Table):
+    def getWisdom(self, value):
+        return value if 0 < value < 26 else 1 if value < 1 else 25 if value > 25 else None
+
+    def getMagicDefAdj(self, wisvalue):
+        return self.values[self.getWisdom(wisvalue)][0]
+
+    def getBonusSpells(self, wisvalue):
+        spellLevels = {1: 0,
+                       2: 0,
+                       3: 0,
+                       4: 0,
+                       5: 0,
+                       6: 0,
+                       7: 0
+                       }
+
+        realwisvalue    = self.getWisdom(wisvalue)
+        levelList       = []
+
+        for i in range(realwisvalue):
+            levelList.extend(self.values[i+1][1])
+
+        for item in levelList:
+            if item:
+                spellLevels[item] = spellLevels[item] + 1
+
+        return spellLevels
+
+    def getSpellFailureChance(self, wisvalue):
+        return self.values[self.getWisdom(wisvalue)][2]
+
+    def getSpellImmunity(self, wisvalue):
+        spells = []
+
+        for i in range(self.getWisdom(wisvalue)):
+            spells.extend(self.values[i+1][3])
+
+        return spells
+
+class CHATABLE(Table):
+    def getCharisma(self, value):
+        return value if 0 < value < 26 else 1 if value < 1 else 25
+
+    def getMaxHenchment(self, chavalue):
+        return self.values[self.getCharisma(chavalue)][0]
+
+    def getLoyaltyBase(self, chavalue):
+        return self.values[self.getCharisma(chavalue)][1]
+
+    def getReactionAdj(self, chavalue):
+        return self.values[self.getCharisma(chavalue)][2]
 
 StrTable = STRENGTHTABLE("Strength",
                          ["Ability Score", "Hit Prob", "Damage Adjustment", "Weight Allowed",
@@ -192,14 +279,105 @@ ConTable = CONTABLE("Constitution",
                      14: [ 0,         88,  92,  0,  0],
                      15: [ 1,         90,  94,  0,  0],
                      16: [ 2,         95,  96,  0,  0],
-                     17: [[2, 3],     97,  98,  0,  0],
-                     18: [[2, 4],     99, 100,  0,  0],
-                     19: [[2, 5],     99, 100,  1,  0],
+                     17: [[2, 3, 1],  97,  98,  0,  0],
+                     18: [[2, 4, 1],  99, 100,  0,  0],
+                     19: [[2, 5, 1],  99, 100,  1,  0],
                      20: [[2, 5, 2],  99, 100,  1,  [1, 6]],
                      21: [[2, 6, 3],  99, 100,  2,  [1, 5]],
                      22: [[2, 6, 3],  99, 100,  2,  [1, 4]],
                      23: [[2, 6, 4],  99, 100,  3,  [1, 3]],
                      24: [[2, 7, 4],  99, 100,  3,  [1, 2]],
                      25: [[2, 7, 4], 100, 100,  4,  [1, 1]]
+                     }
+                    )
+
+IntTable = INTTABLE("Intelligence",
+                    ["Ability Score", "Number of Languages", "Spell Level",
+                     "Chance to Learn Spell", "Max # of Spells/level", "Illusion Immunity"],
+                    {1:  [ 0, 0,   0,   0, 0],
+                     2:  [ 1, 0,   0,   0, 0],
+                     3:  [ 1, 0,   0,   0, 0],
+                     4:  [ 1, 0,   0,   0, 0],
+                     5:  [ 1, 0,   0,   0, 0],
+                     6:  [ 1, 0,   0,   0, 0],
+                     7:  [ 1, 0,   0,   0, 0],
+                     8:  [ 1, 0,   0,   0, 0],
+                     9:  [ 2, 4,  35,   6, 0],
+                     10: [ 2, 5,  40,   7, 0],
+                     11: [ 2, 5,  45,   7, 0],
+                     12: [ 3, 6,  50,   7, 0],
+                     13: [ 3, 6,  55,   9, 0],
+                     14: [ 4, 7,  60,   9, 0],
+                     15: [ 4, 7,  65,  11, 0],
+                     16: [ 5, 8,  70,  11, 0],
+                     17: [ 6, 8,  75,  14, 0],
+                     18: [ 7, 9,  85,  18, 0],
+                     19: [ 8, 9,  95, 100, ['illusion', 1]],
+                     20: [ 9, 9,  96, 100, ['illusion', 2]],
+                     21: [10, 9,  97, 100, ['illusion', 3]],
+                     22: [11, 9,  98, 100, ['illusion', 4]],
+                     23: [12, 9,  99, 100, ['illusion', 5]],
+                     24: [15, 9, 100, 100, ['illusion', 6]],
+                     25: [20, 9, 100, 100, ['illusion', 7]],
+                     }
+                    )
+
+WisTable = WISTABLE("Wisdom",
+                    ["Ability Score", "Magical Def Adj.", "Bonus Spells", "Chance of Spell Failure", "Spell Immunity"],
+                    {1:  [-6,    [], 80,  []],
+                     2:  [-4,    [], 60,  []],
+                     3:  [-3,    [], 50,  []],
+                     4:  [-2,    [], 45,  []],
+                     5:  [-1,    [], 40,  []],
+                     6:  [-1,    [], 35,  []],
+                     7:  [-1,    [], 30,  []],
+                     8:  [ 0,    [], 25,  []],
+                     9:  [ 0,    [], 20,  []],
+                     10: [ 0,    [], 15,  []],
+                     11: [ 0,    [], 10,  []],
+                     12: [ 0,    [],  5,  []],
+                     13: [ 0,    [1],  0, []],
+                     14: [ 0,    [1],  0, []],
+                     15: [ 1,    [2],  0, []],
+                     16: [ 2,    [2],  0, []],
+                     17: [ 3,    [3],  0, []],
+                     18: [ 4,    [4],  0, []],
+                     19: [ 4, [1, 3],  0, ['cause fear', 'charm person', 'command', 'friends', 'hypnotism']],
+                     20: [ 4, [2, 4],  0, ['forget', 'hold person', 'ray of enfeeblement', 'scare']],
+                     21: [ 4, [3, 5],  0, ['fear']],
+                     22: [ 4, [4, 5],  0, ['charm monster', 'confusion', 'emotion', 'fumble', 'suggestion']],
+                     23: [ 4, [1, 6],  0, ['chaos', 'feeblemind', 'hold monster', 'magic jar', 'quest']],
+                     24: [ 4, [5, 6],  0, ['geas', 'mass suggestion', 'rod of rulership']],
+                     25: [ 4, [6, 7],  0, ['antipathy', 'sympathy', 'death spell', 'mass charm']],
+                     }
+                    )
+
+ChaTable = CHATABLE("Charisma",
+                    ["Ability Score", "Maximum Number of Henchment", "Loyalty Base", "Reaction Adjustment"],
+                    {1:  [ 0, -8, -7],
+                     2:  [ 1, -7, -6],
+                     3:  [ 1, -6, -5],
+                     4:  [ 1, -5, -4],
+                     5:  [ 2, -4, -3],
+                     6:  [ 2, -3, -2],
+                     7:  [ 3, -2, -1],
+                     8:  [ 3, -1,  0],
+                     9:  [ 4,  0,  0],
+                     10: [ 4,  0,  0],
+                     11: [ 4,  0,  0],
+                     12: [ 5,  0,  0],
+                     13: [ 5,  0,  1],
+                     14: [ 6,  1,  2],
+                     15: [ 7,  3,  3],
+                     16: [ 8,  4,  5],
+                     17: [10,  6,  6],
+                     18: [15,  8,  7],
+                     19: [20, 10,  8],
+                     20: [25, 12,  9],
+                     21: [30, 14, 10],
+                     22: [35, 16, 11],
+                     23: [40, 18, 12],
+                     24: [45, 20, 13],
+                     25: [50, 20, 14],
                      }
                     )

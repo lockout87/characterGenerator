@@ -18,8 +18,9 @@ class classes():
         self.bonusStr           = bonusStr
 
     def rollHP(self, level, stats):
-        conTable = tables.bonusConTable if self.bonusConHP else tables.conTable
-        return hitDie + dice.xdy("{}D{}".format(str(level - 1), str(hitDie))) + level * conTable[stats["con"]]
+        hpAdjust, warriorAdjust, minimumValue = tables.ConTable.getHitPointAdj(stats["con"])
+        hpAdjust = hpAdjust if not self.bonusConHP else warriorAdjust
+        return dice.xdyrz("{}D{}R{}".format(level-1, self.hitDie, minimumValue)) + level * hpAdjust + self.hitDie
 
     def checkStats(self, stats):
         statsFit = True

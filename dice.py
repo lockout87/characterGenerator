@@ -30,6 +30,21 @@ def xdy(xDy):
     return sum([shuffler(dieSize) for _ in range(numberOfDice)])
 
 
+def xdyrz(xDyRz):
+    """
+    Rolls x number of y-sized dice. Rerolls if result is less than z.
+    :param xDyRz:
+    :return:
+    """
+    xDy, z = xDyRz.split("R")
+    x, y = xDy.split("D")
+    sum = 0
+    for _ in range(int(x)):
+        sum += shuffler(int(y)-int(z)) + int(z)
+
+    return sum
+
+
 def zPlusxdy(zxDy):
     z, xDy = zxDy.split("+")
     return int(z) + xdy(xDy)

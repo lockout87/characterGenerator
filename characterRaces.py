@@ -9,7 +9,7 @@ class characterRaces():
                                  characterClass.CLASSES.priest,
                                  characterClass.CLASSES.thief,
                                  characterClass.CLASSES.mage
-                                ],
+                                 ],
                                 {"str": [3, 18],
                                  "dex": [6,18],
                                  "con": [7, 18],
