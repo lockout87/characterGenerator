@@ -1,5 +1,5 @@
 import dice
-import CLASS
+import classes
 
 class race():
     def __init__(self, raceName, classRestrictions, statRestrictions, statAdjustments,
@@ -20,18 +20,12 @@ class race():
         self.weightRange        = weightRange
         self.ageRange           = ageRange
 
-    def generateClass(self):
-        pass
-
-    def generateStats(self):
-        pass
-
-    def generateCharacter(self):
+    def generateCharacterRace(self):
         character = {"raceName":    self.raceName,
-                     "class":       self.generateClass(),
-                     "stats":       self.generateStats(),
+
                      "height":      dice.zPlusxdy(self.heightRange),
                      "weight":      dice.zPlusxdy(self.weightRange),
                      "age":         dice.zPlusxdy(self.ageRange),
                      }
         return character
+
