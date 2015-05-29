@@ -1,4 +1,4 @@
-__author__ = 'lockout87'
+from strings import *
 
 class Table(object):
     def __init__(self, tableName, headings, values):
@@ -195,9 +195,9 @@ class CHATABLE(Table):
     def getReactionAdj(self, chavalue):
         return self.values[self.getCharisma(chavalue)][2]
 
-StrTable = STRENGTHTABLE("Strength",
-                         ["Ability Score", "Hit Prob", "Damage Adjustment", "Weight Allowed",
-                          "Max Press", "Open Doors", "Bend Bars/LiftGates"],
+StrTable = STRENGTHTABLE(STR,
+                         [TABLE_ABILITYSCORE, TABLE_HIT_PROB, TABLE_DAMAGE_ADJUST, TABLE_WEIGHT_ALLOWED,
+                          TABLE_MAX_PRESS, TABLE_OPEN_DOORS, TABLE_BEND_BAR_LIFT_GATE],
                          {1:      [-5, -4,    1,    3,  1,        0],
                           2:      [-3, -2,    1,    5,  1,        0],
                           3:      [-3, -1,    5,   10,  2,        0],
@@ -231,8 +231,8 @@ StrTable = STRENGTHTABLE("Strength",
                           }
                          )
 
-DexTable = DEXTABLE("Dexterity",
-                    ["Ablity Score", "Reaction Adj.", "Missle Attack Adj.", "Defensive Adj."],
+DexTable = DEXTABLE(DEX,
+                    [TABLE_ABILITYSCORE, TABLE_REACTION_ADJUSTMENT, TABLE_MISSLE_ADJUSTMENT, TABLE_DEFENSE_ADJUSTMENT],
                     {1:  [-6, -6,  5],
                      2:  [-4, -4,  5],
                      3:  [-3, -3,  4],
@@ -261,8 +261,9 @@ DexTable = DEXTABLE("Dexterity",
                      }
                     )
 
-ConTable = CONTABLE("Constitution",
-                    ["Ability Score", "Hit Point Adj.", "System Shock", "Resurrection Survival", "Poison Save", "Regeneration"],
+ConTable = CONTABLE(CON,
+                    [TABLE_ABILITYSCORE, TABLE_HIT_POINT_ADJUSTMENT, TABLE_SYSTEM_SHOCK,
+                     TABLE_RESURRECTION_SURVIVAL, TABLE_POISON_SAVE, TABLE_REGEN],
                     {1:  [-3,         25,  30,  -2, 0],
                      2:  [-2,         30,  35,  -1, 0],
                      3:  [-2,         35,  40,  0,  0],
@@ -291,9 +292,9 @@ ConTable = CONTABLE("Constitution",
                      }
                     )
 
-IntTable = INTTABLE("Intelligence",
-                    ["Ability Score", "Number of Languages", "Spell Level",
-                     "Chance to Learn Spell", "Max # of Spells/level", "Illusion Immunity"],
+IntTable = INTTABLE(INT,
+                    [TABLE_ABILITYSCORE, TABLE_NUM_LANG, TABLE_SPELL_LEVEL,
+                     TABLE_CHANCE_TO_LEARN, TABLE_MAX_NUM_OF_SPELLS, TABLE_ILLUSION_IMMUNITY],
                     {1:  [ 0, 0,   0,   0, 0],
                      2:  [ 1, 0,   0,   0, 0],
                      3:  [ 1, 0,   0,   0, 0],
@@ -312,18 +313,19 @@ IntTable = INTTABLE("Intelligence",
                      16: [ 5, 8,  70,  11, 0],
                      17: [ 6, 8,  75,  14, 0],
                      18: [ 7, 9,  85,  18, 0],
-                     19: [ 8, 9,  95, 100, ['illusion', 1]],
-                     20: [ 9, 9,  96, 100, ['illusion', 2]],
-                     21: [10, 9,  97, 100, ['illusion', 3]],
-                     22: [11, 9,  98, 100, ['illusion', 4]],
-                     23: [12, 9,  99, 100, ['illusion', 5]],
-                     24: [15, 9, 100, 100, ['illusion', 6]],
-                     25: [20, 9, 100, 100, ['illusion', 7]],
+                     19: [ 8, 9,  95, 100, [MAGIC_SCHOOL_ILLUSION, 1]],
+                     20: [ 9, 9,  96, 100, [MAGIC_SCHOOL_ILLUSION, 2]],
+                     21: [10, 9,  97, 100, [MAGIC_SCHOOL_ILLUSION, 3]],
+                     22: [11, 9,  98, 100, [MAGIC_SCHOOL_ILLUSION, 4]],
+                     23: [12, 9,  99, 100, [MAGIC_SCHOOL_ILLUSION, 5]],
+                     24: [15, 9, 100, 100, [MAGIC_SCHOOL_ILLUSION, 6]],
+                     25: [20, 9, 100, 100, [MAGIC_SCHOOL_ILLUSION, 7]],
                      }
                     )
 
-WisTable = WISTABLE("Wisdom",
-                    ["Ability Score", "Magical Def Adj.", "Bonus Spells", "Chance of Spell Failure", "Spell Immunity"],
+WisTable = WISTABLE(WIS,
+                    [TABLE_ABILITYSCORE, TABLE_MAGIC_DEF_ADJUSTMENT, TABLE_BONUS_SPELLS,
+                     TABLE_CHANCE_SPELL_FAILURE, TABLE_SPELL_IMMUNITY],
                     {1:  [-6,    [], 80,  []],
                      2:  [-4,    [], 60,  []],
                      3:  [-3,    [], 50,  []],
@@ -352,8 +354,9 @@ WisTable = WISTABLE("Wisdom",
                      }
                     )
 
-ChaTable = CHATABLE("Charisma",
-                    ["Ability Score", "Maximum Number of Henchment", "Loyalty Base", "Reaction Adjustment"],
+ChaTable = CHATABLE(CHA,
+                    [TABLE_ABILITYSCORE, TABLE_MAX_HENCMEN,
+                     TABLE_LOYALTY_BASE, TABLE_SOCIAL_REACTION_ADJUSTMENT],
                     {1:  [ 0, -8, -7],
                      2:  [ 1, -7, -6],
                      3:  [ 1, -6, -5],

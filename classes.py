@@ -1,14 +1,14 @@
 import dice
 import tables
-
+from strings import *
 
 class classes():
     def __init__(self, className, hitDie, statRestrictions, thac0Progression, bonusConHP = False, bonusStr = False):
-        assert isinstance(className, str),          "className must be of type str"
-        assert isinstance(hitDie, int),             "hitDie must be of type int"
-        assert isinstance(statRestrictions, dict),  "statRestrictions must be of type dict"
-        assert isinstance(bonusConHP, bool),        "bonusConHP must be of type bool"
-        assert isinstance(bonusStr, bool),          "bonusStr must be of type bool"
+        assert isinstance(className, str),          CLASS_CLASSNAME_WAR
+        assert isinstance(hitDie, int),             CLASS_HITDIE_WAR
+        assert isinstance(statRestrictions, dict),  CLASS_STATRESTRICT_WAR
+        assert isinstance(bonusConHP, bool),        CLASS_BONUSCON_WAR
+        assert isinstance(bonusStr, bool),          CLASS_BONUSSTR_WAR
 
         self.className          = className
         self.statRestrictions   = statRestrictions
@@ -18,7 +18,7 @@ class classes():
         self.bonusStr           = bonusStr
 
     def rollHP(self, level, stats):
-        hpAdjust, warriorAdjust, minimumValue = tables.ConTable.getHitPointAdj(stats["con"])
+        hpAdjust, warriorAdjust, minimumValue = tables.ConTable.getHitPointAdj(stats[CON])
         hpAdjust = hpAdjust if not self.bonusConHP else warriorAdjust
         return dice.xdyrz("{}D{}R{}".format(level-1, self.hitDie, minimumValue)) + level * hpAdjust + self.hitDie
 

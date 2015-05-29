@@ -1,16 +1,17 @@
 import dice
 import classes
+from strings import *
 
 class race():
     def __init__(self, raceName, classRestrictions, statRestrictions, statAdjustments,
                  heightRange, weightRange, ageRange):
-        assert isinstance(raceName, str),           "raceName must be of type str"
-        assert isinstance(classRestrictions, list), "classRestrictions must be of type list"
-        assert isinstance(statRestrictions, dict),  "statRestrictions must be of type dict"
-        assert isinstance(statAdjustments, dict),   "statAdjustments must be of type dict"
-        assert isinstance(heightRange, str),        "heightRange must be of type str"
-        assert isinstance(weightRange, str),        "weightRange must be of type str"
-        assert isinstance(ageRange, str),           "ageRange must be of type str"
+        assert isinstance(raceName, str),           RACE_RACE_NAME_WAR
+        assert isinstance(classRestrictions, list), RACE_CLASS_RESTRICTION_WAR
+        assert isinstance(statRestrictions, dict),  RACE_STAT_RESTRICTION_WAR
+        assert isinstance(statAdjustments, dict),   RACE_STAT_ADJUSTMENT_WAR
+        assert isinstance(heightRange, str),        RACE_HEIGHT_RANGE_WAR
+        assert isinstance(weightRange, str),        RACE_WEIGHT_RANGE_WAR
+        assert isinstance(ageRange, str),           RACE_AGE_RANGE_WAR
         
         self.raceName           = raceName
         self.classRestrictions  = classRestrictions
@@ -22,7 +23,6 @@ class race():
 
     def generateCharacterRace(self):
         character = {"raceName":    self.raceName,
-
                      "height":      dice.zPlusxdy(self.heightRange),
                      "weight":      dice.zPlusxdy(self.weightRange),
                      "age":         dice.zPlusxdy(self.ageRange),

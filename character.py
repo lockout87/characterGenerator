@@ -4,7 +4,7 @@ import characterRaces
 import dice
 import classes
 import tables
-from stats import *
+from strings import *
 
 class character(object):
     def __init__(self):
@@ -13,7 +13,7 @@ class character(object):
         #self._class = self.generateClass(self._stats, self._race)
 
     def generateStats(self):
-        statsNames  = [str, dex, con, int, wis, cha]
+        statsNames  = [STR, DEX, CON, INT, WIS, CHA]
         statNumbers = [dice.fourDSixDropLowest() for _ in range(6)]
         statDict    = {name: number for name, number in zip(statsNames, statNumbers)}
         return statDict
