@@ -5,7 +5,7 @@ from strings import *
 
 class characterRaces():
     def __init__(self):
-        self.elf    = race.race("elf",
+        self.elf    = race.race(ELF,
                                 [characterClass.CLASSES.fighter,
                                  characterClass.CLASSES.priest,
                                  characterClass.CLASSES.thief,
@@ -24,7 +24,7 @@ class characterRaces():
                                 "100+5D6"
                                 )
 
-        self.dwarf  = race.race("dwarf",
+        self.dwarf  = race.race(DWARF,
                                 [characterClass.CLASSES.fighter,
                                  characterClass.CLASSES.priest,
                                  characterClass.CLASSES.thief,
@@ -37,5 +37,8 @@ class characterRaces():
                                  CHA: [3, 17],
                                  },
                                 {CON: 1, CHA: -1},
-                                
+                                "45+1D10",
+                                "115+1D110",
+                                "55+5D6"
                                 )
+        self.characterRaces = [self.dwarf, self.elf]

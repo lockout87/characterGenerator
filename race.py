@@ -21,11 +21,27 @@ class race():
         self.weightRange        = weightRange
         self.ageRange           = ageRange
 
-    def generateCharacterRace(self):
-        character = {"raceName":    self.raceName,
-                     "height":      dice.zPlusxdy(self.heightRange),
-                     "weight":      dice.zPlusxdy(self.weightRange),
-                     "age":         dice.zPlusxdy(self.ageRange),
-                     }
+    def generateCharacterRace(self, stats):
+        character = None
+        if self.statsFit(stats):
+            character = {"raceName":    self.raceName,
+                         "height":      dice.zPlusxdy(self.heightRange),
+                         "weight":      dice.zPlusxdy(self.weightRange),
+                         "age":         dice.zPlusxdy(self.ageRange),
+                         }
+
         return character
+
+    def statsFit(self, stats):
+        statsAreGood = True
+        for statName, statValue in self.statRestriction.iteritems():
+            if stateValue >= stats[statName]:
+                continue
+            else:
+                statsAreGood = False
+                break
+
+        return statsAreGood
+
+
 
