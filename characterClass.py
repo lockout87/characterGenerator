@@ -5,6 +5,7 @@ __author__ = 'lockout87'
 
 class characterClass():
     def __init__(self):
+        # Warriors
         self.fighter        = CLASS.classes(FIGHTER,
                                             10,
                                             {STR: 9},

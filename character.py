@@ -22,7 +22,18 @@ class character(object):
         return self._stats
 
     def generateRace(self, stats):
-        while True:
+        races = characterRaces.CHARACTER_RACES.characterRaces
+        print races
+        dice.shuffle(races)
+        for race in races:
+            print race
+
+
+CHARACTER = character()
+
+
+
+
 
 
 

@@ -42,3 +42,5 @@ class characterRaces():
                                 "55+5D6"
                                 )
         self.characterRaces = [self.dwarf, self.elf]
+
+CHARACTER_RACES = characterRaces()
